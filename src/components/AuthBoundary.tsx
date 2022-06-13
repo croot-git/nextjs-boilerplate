@@ -33,7 +33,9 @@ function AuthProvider({ children }) {
 		auth.check();
 	}, [router.pathname]);
 
-	return (isLoginPage() || (isChecked && status === 'idle')) && children;
+	//초기 인증 제외
+	// return (isLoginPage() || (isChecked && status === 'idle')) && children;
+	return children
 }
 
 export default AuthProvider;
