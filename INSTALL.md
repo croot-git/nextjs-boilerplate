@@ -27,12 +27,11 @@ import type { AppProps } from 'next/app';
 import { IntlProvider } from 'react-intl';
 import koLangPack from 'locales/ko-KR';
 import enLangPack from 'locales/en-US';
-import idLangPack from 'locales/id-ID';
 
 function App({ Component, pageProps }: AppProps) {
 	const router = useRouter();
 	const locale = router.locale || 'ko-KR';
-	const messages = { 'en-US': enLangPack, 'ko-KR': koLangPack, 'id-ID': idLangPack }[locale];
+	const messages = { 'en-US': enLangPack, 'ko-KR': koLangPack }[locale];
 
 	return (
 		<IntlProvider locale={locale} messages={messages} onError={() => null}>
@@ -71,17 +70,17 @@ yarn add -D babel-plugin-styled-components
 ```json
 /* Filename: .babelrc */
 {
-	"presets": ["next/babel"],
-	"plugins": [
-		[
-			"styled-components",
-			{
-				"ssr": true,
-				"displayName": true,
-				"preprocess": false
-			}
-		]
-	]
+    "presets" : ["next/babel"],
+    "plugins": [
+        [
+            "styled-components",
+            {
+                "ssr": true,
+                "displayName": true,
+                "preprocess": false
+            }
+        ]
+    ]
 }
 ```
 
@@ -94,9 +93,9 @@ yarn add styled-reset
 ```tsx
 /* styles/global.ts */
 
-import { createGlobalStyle } from 'styled-components';
-import { reset } from 'styled-reset';
-export const GlobalStyle = createGlobalStyle`
+import { createGlobalStyle } from 'styled-components'
+import { reset } from 'styled-reset'
+export const GlobalStyle = createGlobalStyle `
     ${reset}
     html {
         box-sizing: border-box;
@@ -110,25 +109,25 @@ export const GlobalStyle = createGlobalStyle`
     }
     * { font-family: 'Spoqa Han Sans', 'Spoqa Han Sans JP', 'Sans-serif';}
     a { cursor: pointer; text-decoration: none; }
-`;
+`
 ```
 
 ```tsx
 /* pages/_app.tsx */
 
-import type { AppProps } from 'next/app';
-import { GlobalStyle } from '../styles/global';
+import type {AppProps} from 'next/app'
+import {GlobalStyle} from "../styles/global";
 
-function App({ Component, pageProps }: AppProps) {
-	return (
-		<>
-			<GlobalStyle />
-			<Component {...pageProps} />
-		</>
-	);
+function App({Component, pageProps} : AppProps){
+    return (
+			<>
+	      <GlobalStyle />
+	      <Component {...pageProps} />
+			</>
+    );
 }
 
-export default App;
+export default App
 ```
 
 ### (optional) 테마 설정
@@ -136,39 +135,39 @@ export default App;
 ```tsx
 /* styles/theme.ts */
 
-import { DefaultTheme } from 'styled-components';
+import {DefaultTheme} from 'styled-components'
 
 export const theme: DefaultTheme = {
-	breakPoint: '769px',
+    breakPoint: '769px',
 
-	colors: {
-		black: '#1e1f1d',
-		yellow: '#edb83c',
-		orange: '#eb7952',
-		gray: '#6e6e6e',
-		gray_background: '#f5f5f5'
-	}
-};
+    colors: {
+        black: '#1e1f1d',
+        yellow: '#edb83c',
+        orange: '#eb7952',
+        gray: '#6e6e6e',
+        gray_background: '#f5f5f5',
+    }
+}
 ```
 
 ```tsx
 /* pages/_app.tsx */
 
-import type { AppProps } from 'next/app';
-import { ThemeProvider } from 'styled-components';
-import { theme } from '../styles/theme';
-import { GlobalStyle } from '../styles/global';
+import type { AppProps } from 'next/app'
+import {ThemeProvider} from "styled-components";
+import {theme} from "../styles/theme";
+import {GlobalStyle} from "../styles/global";
 
-function App({ Component, pageProps }: AppProps) {
-	return (
-		<ThemeProvider theme={theme}>
-			<GlobalStyle />
-			<Component {...pageProps} />
-		</ThemeProvider>
-	);
+function App({Component, pageProps} : AppProps){
+    return (
+        <ThemeProvider theme={theme}>
+            <GlobalStyle />
+            <Component {...pageProps} />
+        </ThemeProvider>
+    );
 }
 
-export default App;
+export default App
 ```
 
 ## Emotion 설치
@@ -186,25 +185,29 @@ yarn add --dev @emotion/babel-preset-css-prop
 	"compilerOptions": {
 		//...
 		"jsxImportSource": "@emotion/react"
-	}
+	},
 	//...
 }
 ```
 
 ```json
 {
-	"presets": [
-		[
-			"next/babel",
-			{
-				"preset-react": {
-					"runtime": "automatic",
-					"importSource": "@emotion/react"
-				}
-			}
+  "presets": [
+    [
+      "next/babel",
+      {
+        "preset-react": {
+          "runtime": "automatic",
+          "importSource": "@emotion/react"
+        }
+      }
+    ]
+  ],
+	"plugins": [
+    [
+      "@emotion/babel-plugin"
 		]
-	],
-	"plugins": [["@emotion/babel-plugin"]]
+  ]
 }
 ```
 
@@ -221,37 +224,35 @@ import emotionReset from 'emotion-reset';
 import { Global, css } from '@emotion/react';
 
 render(
-	<Global
-		styles={css`
-			${emotionReset}
+  <Global styles={css`
+    ${emotionReset}
 
-			*, *::after, *::before {
-				box-sizing: border-box;
-				-moz-osx-font-smoothing: grayscale;
-				-webkit-font-smoothing: antialiased;
-				font-smoothing: antialiased;
-			}
-		`}
-	/>
+    *, *::after, *::before {
+      box-sizing: border-box;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-font-smoothing: antialiased;
+      font-smoothing: antialiased;
+    }
+  `} />
 );
 ```
 
 ```tsx
 /* pages/_app.tsx */
 
-import type { AppProps } from 'next/app';
-import { GlobalStyle } from '../styles/global';
+import type {AppProps} from 'next/app'
+import {GlobalStyle} from "../styles/global";
 
-function App({ Component, pageProps }: AppProps) {
-	return (
-		<>
-			<GlobalStyle />
-			<Component {...pageProps} />
-		</>
-	);
+function App({Component, pageProps} : AppProps){
+    return (
+      <>
+        <GlobalStyle />
+        <Component {...pageProps} />
+      </>
+    );
 }
 
-export default App;
+export default App
 ```
 
 ### (optional) 테마 설정
@@ -261,37 +262,37 @@ export default App;
 ```tsx
 /* styles/theme.ts */
 
-import { Theme } from '@emotion/react';
+import {Theme} from '@emotion/react'
 
 export const theme: Theme = {
-	colors: {
-		black: '#1e1f1d',
-		yellow: '#edb83c',
-		orange: '#eb7952',
-		gray: '#6e6e6e',
-		gray_background: '#f5f5f5'
-	}
-};
+    colors: {
+        black: '#1e1f1d',
+        yellow: '#edb83c',
+        orange: '#eb7952',
+        gray: '#6e6e6e',
+        gray_background: '#f5f5f5',
+    }
+}
 ```
 
 ```tsx
 /* pages/_app.tsx */
 
-import type { AppProps } from 'next/app';
-import { ThemeProvider } from '@emotion/react';
-import { theme } from '../styles/theme';
-import { GlobalStyle } from '../styles/global';
+import type {AppProps} from 'next/app'
+import {ThemeProvider} from "@emotion/react";
+import {theme} from "../styles/theme";
+import {GlobalStyle} from "../styles/global";
 
-function App({ Component, pageProps }: AppProps) {
-	return (
-		<ThemeProvider theme={theme}>
-			<GlobalStyle />
-			<Component {...pageProps} />
-		</ThemeProvider>
-	);
+function App({Component, pageProps} : AppProps){
+    return (
+        <ThemeProvider theme={theme}>
+            <GlobalStyle />
+            <Component {...pageProps} />
+        </ThemeProvider>
+    );
 }
 
-export default App;
+export default App
 ```
 
 ## ant design 설치
@@ -304,13 +305,78 @@ yarn add antd
 /* pages/_app.tsx */
 
 import 'antd/dist/antd.css';
-import type { AppProps } from 'next/app';
+import type {AppProps} from 'next/app';
 
-function App({ Component, pageProps }: AppProps) {
-	return <Component {...pageProps} />;
+function App({Component, pageProps} : AppProps){
+    return (
+      <Component {...pageProps} />
+    );
 }
 
-export default App;
+export default App
+```
+
+### (optional) 테마 설정
+
+```bash
+yarn add next-plugin-antd-less
+yarn add --dev babel-plugin-import
+```
+
+<aside>
+💡 less 관련 의존 모듈은 next-plugin-antd-less만 있어야 함. (less, @zeit/next-less 등 제거)
+의존모듈이 있다면, 삭제 후 `yarn install --force`를 실행한다.
+
+</aside>
+
+```jsx
+/* next.config.js */
+
+const withAntdLess = require('next-plugin-antd-less');
+
+/** @type {import('next').NextConfig} */
+module.exports = (phase, { defaultConfig }) => {
+	const nextConfig = {
+		// ...
+	}
+	return withAntdLess({
+		lessVarsFilePath: './src/styles/antd.less',
+		...nextConfig,
+		webpack: (config) => {
+			return config
+		}
+	});
+};
+```
+
+```json
+/* .babelrc */
+
+{
+  "presets": [
+    "next/babel"
+  ],
+  "plugins": [
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "style": true
+      }
+    ],
+		// ...
+  ]
+}
+```
+
+```json
+/* styles/antd.less */
+
+@import '~antd/lib/style/themes/default.less';
+@import '~antd/dist/antd.less'; // Import Ant Design styles
+
+@primary-color: #5fcec7;
+//...
 ```
 
 ## redux + toolkit 설치
@@ -361,7 +427,9 @@ import type { AppProps } from 'next/app';
 import StoreWrapper from 'app/store';
 
 function App({ Component, pageProps }: AppProps) {
-	return <Component {...pageProps} />;
+	return (
+		<Component {...pageProps} />
+	);
 }
 
 export default StoreWrapper.withRedux(App);
@@ -436,7 +504,9 @@ import StoreWrapper from 'app/store';
 import withReduxSaga from 'next-redux-saga';
 
 function App({ Component, pageProps }: AppProps) {
-	return <Component {...pageProps} />;
+	return (
+		<Component {...pageProps} />
+	);
 }
 
 export default StoreWrapper.withRedux(withReduxSaga(App));
@@ -445,7 +515,9 @@ export default StoreWrapper.withRedux(withReduxSaga(App));
 ## Debugger
 
 - 빈 .babelrc 파일이 존재 할 경우 아래와 같은 에러가 발생.
-  ```bash
-  error - ./node_modules/next/dist/client/dev/amp-dev.js
-  SyntaxError: JSON5: invalid end of input at 1:1
-  ```
+파일 존재 자체를 체크하나 봄
+    
+    ```bash
+    error - ./node_modules/next/dist/client/dev/amp-dev.js
+    SyntaxError: JSON5: invalid end of input at 1:1
+    ```

@@ -4,3 +4,7 @@ interface IState {
 	error: null;
 	[x: string | number | symbol]: unknown;
 }
+
+interface NextPageWithLayout extends NextPage {
+	Layout?: ReactNode;
+}
